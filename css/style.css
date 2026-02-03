@@ -1,0 +1,101 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* IMPORTANTISSIMO: niente scrollbars */
+}
+
+body {
+    height: 100vh;
+    background: #ffe6eb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    text-align: center;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 40px;
+}
+
+/* ✅ Layout corretto: bottoni centrati, stessi livelli, equidistanti */
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 48px;           /* distanza tra YES e NO */
+    margin: 0 auto;
+}
+
+/* Bottone base */
+.btn {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+    min-width: 130px;    /* ✅ stessa larghezza = equidistanza perfetta */
+    text-align: center;
+}
+
+/* YES */
+.yes {
+    background-color: #4CAF50;
+}
+
+/* NO */
+.no {
+    background-color: #f44336;
+    position: fixed; /* si muove nella viewport */
+    transition: transform 260ms cubic-bezier(.2,.9,.2,1); /* ✅ smooth */
+    will-change: transform;
+}
+
+/* ✅ Spacer che mantiene lo spazio del NO dentro il layout */
+.btn-spacer {
+    display: inline-block;
+    min-width: 130px;
+    height: 54px; /* valore indicativo: verrà corretto via JS in automatico */
+}
+
+.gif {
+    margin-top: 30px;
+    max-width: 300px;
+}
+
+/* ❤️ Hearts overlay */
+#hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.heart {
+  position: absolute;
+  top: -40px;
+  font-size: 24px;
+  opacity: 0.9;
+  animation: fall linear forwards;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.15));
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0.95;
+  }
+}

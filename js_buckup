@@ -1,0 +1,111 @@
+const noBtn = document.getElementById("noBtn");
+
+let baseLeft = 0;
+let baseTop = 0;
+let currentLeft = 0;
+let currentTop = 0;
+
+let leftSpacer = null;
+let rightSpacer = null;
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+/**
+ * Crea due spacer (sinistra e destra) della stessa dimensione del NO.
+ * Così il layout flex resta perfettamente centrato e simmetrico.
+ */
+function createSpacers() {
+  const rect = noBtn.getBoundingClientRect();
+  const parent = noBtn.parentElement;
+
+  //leftSpacer = document.createElement("span");
+  rightSpacer = document.createElement("span");
+
+  //leftSpacer.className = "btn-spacer";
+  rightSpacer.className = "btn-spacer";
+
+  // replica dimensioni reali del NO
+  //leftSpacer.style.width = `${rect.width}px`;
+  //leftSpacer.style.height = `${rect.height}px`;
+  rightSpacer.style.width = `${rect.width}px`;
+  rightSpacer.style.height = `${rect.height}px`;
+
+  // struttura finale: [spacer][YES][spacer]
+  //parent.prepend(leftSpacer);
+  parent.appendChild(rightSpacer);
+}
+
+/**
+ * Imposta il NO fixed esattamente sopra lo spacer di destra
+ * (che è la sua posizione iniziale in layout).
+ */
+function initNoButtonFixedPosition() {
+  const rect = rightSpacer.getBoundingClientRect();
+
+  baseLeft = rect.left;
+  baseTop = rect.top;
+
+  currentLeft = baseLeft;
+  currentTop = baseTop;
+
+  noBtn.style.position = "fixed";
+  noBtn.style.left = `${baseLeft}px`;
+  noBtn.style.top = `${baseTop}px`;
+  noBtn.style.transform = "translate(0px, 0px)";
+}
+
+/**
+ * Muove il NO lontano e sempre dentro lo schermo.
+ */
+function moveNoButtonFar() {
+  const padding = 12;
+  const minDistance = 280;
+
+  const btnRect = noBtn.getBoundingClientRect();
+  const vw = document.documentElement.clientWidth;
+  const vh = document.documentElement.clientHeight;
+
+  const maxLeft = vw - btnRect.width - padding;
+  const maxTop = vh - btnRect.height - padding;
+
+  let newLeft, newTop;
+
+  do {
+    newLeft = Math.random() * (maxLeft - padding) + padding;
+    newTop  = Math.random() * (maxTop - padding) + padding;
+  } while (Math.hypot(newLeft - currentLeft, newTop - currentTop) < minDistance);
+
+  newLeft = clamp(newLeft, padding, maxLeft);
+  newTop  = clamp(newTop, padding, maxTop);
+
+  currentLeft = newLeft;
+  currentTop = newTop;
+
+  const dx = newLeft - baseLeft;
+  const dy = newTop - baseTop;
+
+  noBtn.style.transform = `translate(${dx}px, ${dy}px)`;
+}
+
+function resetAll() {
+  // rimuovi spacer se presenti
+  if (leftSpacer) leftSpacer.remove();
+  if (rightSpacer) rightSpacer.remove();
+
+  // ricrea spacer e riallinea posizione base
+  createSpacers();
+  initNoButtonFixedPosition();
+}
+
+window.addEventListener("load", () => {
+  resetAll();
+
+  noBtn.addEventListener("mouseenter", moveNoButtonFar);
+  noBtn.addEventListener("mousedown", moveNoButtonFar);
+});
+
+window.addEventListener("resize", () => {
+  resetAll();
+});
