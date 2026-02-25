@@ -66,7 +66,7 @@ function moveNoButtonFar() {
 /* Scappa quando ti avvicini */
 function setupProximityEscape() {
   const escapeRadius = 140;
-  const cooldownMs = 250;
+  const cooldownMs = 220;
   let lastMove = 0;
 
   document.addEventListener("mousemove", (e) => {

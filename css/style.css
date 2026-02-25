@@ -1,81 +1,269 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400;1,600&family=Raleway:wght@300;400;500;600&display=swap');
+
+/* ─────────────────────────────────────────────
+   TOKENS
+───────────────────────────────────────────── */
+:root {
+  --bg:          #070209;
+  --rose:        #e8909e;
+  --rose-light:  #f2b0bc;
+  --rose-deep:   #be4a68;
+  --gold:        #c49060;
+  --gold-light:  #ddb888;
+  --cream:       #f4e6da;
+  --muted:       #8a5f70;
+  --yes-from:    #be4a68;
+  --yes-to:      #c49060;
+}
+
+/* ─────────────────────────────────────────────
+   RESET
+───────────────────────────────────────────── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html, body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden; /* IMPORTANTISSIMO: niente scrollbars */
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
+/* ─────────────────────────────────────────────
+   BODY — atmospheric dark background
+───────────────────────────────────────────── */
 body {
-    height: 100vh;
-    background: #ffe6eb;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 100vh;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 50%, rgba(88,16,34,0.92) 0%, transparent 68%),
+    radial-gradient(ellipse 110% 90% at 50% 50%, rgba(42,7,18,0.75) 0%, transparent 85%),
+    var(--bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Raleway', sans-serif;
+  color: var(--cream);
 }
 
+/* Vignette */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(ellipse 110% 110% at 50% 50%, transparent 55%, rgba(3,0,6,0.75) 100%);
+}
+
+/* Film-grain texture */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px;
+}
+
+/* ─────────────────────────────────────────────
+   CONTAINER
+───────────────────────────────────────────── */
 .container {
-    text-align: center;
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 0 2rem;
 }
 
+/* ─────────────────────────────────────────────
+   EYEBROW
+───────────────────────────────────────────── */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0;
+  animation: fadeUp 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  margin-bottom: 1.5rem;
+}
+
+.eyebrow::before,
+.eyebrow::after {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.5;
+}
+
+/* ─────────────────────────────────────────────
+   HEADING
+───────────────────────────────────────────── */
 h1 {
-    font-size: 3rem;
-    margin-bottom: 40px;
+  font-family: 'Cormorant', serif;
+  font-weight: 300;
+  font-size: clamp(2.8rem, 6.5vw, 5.2rem);
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  color: var(--cream);
+  opacity: 0;
+  animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.65s forwards;
+  margin-bottom: 1rem;
 }
 
-/* ✅ Layout corretto: bottoni centrati, stessi livelli, equidistanti */
+h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--rose-light);
+}
+
+/* ─────────────────────────────────────────────
+   SUBTITLE (index page)
+───────────────────────────────────────────── */
+.subtitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-size: 0.64rem;
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0;
+  animation: fadeUp 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.95s forwards;
+  margin-bottom: 3.5rem;
+}
+
+.subtitle::before,
+.subtitle::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--muted));
+  opacity: 0.45;
+}
+
+.subtitle::after {
+  background: linear-gradient(90deg, var(--muted), transparent);
+}
+
+/* ─────────────────────────────────────────────
+   BUTTONS
+───────────────────────────────────────────── */
 .buttons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 48px;           /* distanza tra YES e NO */
-    margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin: 0 auto;
+  /* opacity-only fade (no translateY — keeps NO button positioning accurate) */
+  opacity: 0;
+  animation: fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) 1.15s forwards;
 }
 
-/* Bottone base */
 .btn {
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    text-decoration: none;
-    color: white;
-    min-width: 130px;    /* ✅ stessa larghezza = equidistanza perfetta */
-    text-align: center;
+  padding: 15px 46px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 148px;
+  position: relative;
+  overflow: hidden;
 }
 
-/* YES */
+/* ── YES ── */
 .yes {
-    background-color: #4CAF50;
+  background: linear-gradient(135deg, var(--yes-from) 0%, var(--yes-to) 100%);
+  color: #fff;
+  border: none;
+  box-shadow:
+    0 4px 24px rgba(190, 74, 104, 0.45),
+    0 1px 4px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.22s ease;
 }
 
-/* NO */
+/* shimmer sweep */
+.yes::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    108deg,
+    transparent 28%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 72%
+  );
+  transform: translateX(-160%);
+  transition: none;
+}
+
+.yes:hover::after {
+  transform: translateX(160%);
+  transition: transform 0.55s ease;
+}
+
+.yes:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 10px 36px rgba(190, 74, 104, 0.6),
+    0 3px 8px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.yes:active {
+  transform: scale(0.97) translateY(0);
+  transition-duration: 0.1s;
+}
+
+/* ── NO ── */
 .no {
-    background-color: #f44336;
-    position: fixed; /* si muove nella viewport */
-    transition: transform 260ms cubic-bezier(.2,.9,.2,1); /* ✅ smooth */
-    will-change: transform;
+  background: transparent;
+  color: rgba(232, 144, 158, 0.6);
+  border: 1px solid rgba(232, 144, 158, 0.22);
+  position: fixed;
+  transition: transform 300ms cubic-bezier(0.2, 0.9, 0.2, 1),
+              color 0.2s ease,
+              border-color 0.2s ease;
+  will-change: transform;
 }
 
-/* ✅ Spacer che mantiene lo spazio del NO dentro il layout */
+.no:hover {
+  color: rgba(232, 144, 158, 0.88);
+  border-color: rgba(232, 144, 158, 0.42);
+}
+
+/* ── Spacer ── */
 .btn-spacer {
-    display: inline-block;
-    min-width: 130px;
-    height: 54px; /* valore indicativo: verrà corretto via JS in automatico */
+  display: inline-block;
+  min-width: 148px;
+  height: 50px; /* approx — corrected by JS */
 }
 
-.gif {
-    margin-top: 30px;
-    max-width: 300px;
-}
-
-/* ❤️ Hearts overlay */
+/* ─────────────────────────────────────────────
+   HEARTS LAYER
+───────────────────────────────────────────── */
 #hearts {
   position: fixed;
   inset: 0;
@@ -86,16 +274,107 @@ h1 {
 
 .heart {
   position: absolute;
-  top: -40px;
-  font-size: 24px;
-  opacity: 0.9;
+  top: -50px;
   animation: fall linear forwards;
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.15));
 }
 
 @keyframes fall {
-  to {
-    transform: translateY(110vh) rotate(360deg);
-    opacity: 0.95;
-  }
+  0%   { opacity: 0;   transform: translateX(0) translateY(0) rotate(0deg) scale(0.7); }
+  6%   { opacity: 1;   transform: translateX(calc(var(--sway) * 0.05)) translateY(4vh) rotate(8deg) scale(1); }
+  50%  { opacity: 0.9; }
+  92%  { opacity: 0.6; }
+  100% { opacity: 0;   transform: translateX(var(--sway)) translateY(112vh) rotate(var(--spin)) scale(0.85); }
+}
+
+/* ─────────────────────────────────────────────
+   ENTRANCE ANIMATIONS
+───────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ─────────────────────────────────────────────
+   RESULT PAGE
+───────────────────────────────────────────── */
+.result-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.result-container h1 {
+  margin-bottom: 0.5rem;
+}
+
+.result-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0;
+  animation: fadeUp 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+  margin-bottom: 1.2rem;
+}
+
+.result-eyebrow::before,
+.result-eyebrow::after {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.5;
+}
+
+.result-subtitle {
+  font-size: 0.64rem;
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0;
+  animation: fadeUp 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.88s forwards;
+  margin-bottom: 2.8rem;
+}
+
+.gif-wrapper {
+  position: relative;
+  display: inline-block;
+  opacity: 0;
+  animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 1.05s forwards;
+}
+
+/* Animated gradient border */
+.gif-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--rose-deep), var(--gold-light), var(--rose-deep));
+  background-size: 250% 250%;
+  animation: borderShimmer 4s ease infinite;
+  z-index: -1;
+  opacity: 0.65;
+}
+
+@keyframes borderShimmer {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gif {
+  display: block;
+  max-width: 265px;
+  border-radius: 6px;
 }
